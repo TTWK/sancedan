@@ -54,6 +54,79 @@ export default {
     this.renderECharts(tableDatas, this.whStyle)
   },
   methods: {
+    // 绘制拐点的函数
+    getInflectionPoint () {
+      let inflectionPointList = []
+      this.getLinePoints(
+        'heartRate',
+        this.heartRateData,
+        left,
+        top,
+        mRowNum,
+        rowSpacing
+      ).forEach(point => {
+        let template = {
+          type: 'circle',
+          shape: {
+            cx: point[0],
+            cy: point[1],
+            r: 3
+          },
+          style: {
+            fill: 'red',
+            stroke: 'red'
+          }
+        }
+        inflectionPointList = [...inflectionPointList, template]
+      })
+      this.getLinePoints(
+        'temperature',
+        this.temperatureData,
+        left,
+        top,
+        mRowNum,
+        rowSpacing
+      ).forEach(point => {
+        let template = {
+          type: 'circle',
+          shape: {
+            cx: point[0],
+            cy: point[1],
+            r: 3
+          },
+          style: {
+            fill: 'blue',
+            stroke: 'blue'
+          }
+        }
+        inflectionPointList = [...inflectionPointList, template]
+      })
+      this.getLinePoints(
+        'breath',
+        this.breathData,
+        left,
+        top,
+        mRowNum,
+        rowSpacing
+      ).forEach(point => {
+        let template = {
+          type: 'ring',
+          shape: {
+            cx: point[0],
+            cy: point[1],
+            r: 3,
+            r0: 0
+          },
+          style: {
+            fill: '#fff',
+            stroke: 'blue',
+            lineWidth: 1
+          }
+        }
+        inflectionPointList = [...inflectionPointList, template]
+      })
+      return inflectionPointList
+    },
     // 切割数组
     sliceArray (array, size) {
       let result = []
@@ -240,6 +313,10 @@ export default {
       /* 页脚部分：水平线、纵向线、以及文字 */
       let bottomList = this.getBottomList(bDataKeys, bRowNum, columnNum)
       list = [...list, ...bottomList]
+
+      /* 拐点 */
+      let inflectionPoint = this.getInflectionPoint()
+      list = [...list, ...inflectionPoint]
       let self = this
       list = [
         ...list,
@@ -275,7 +352,7 @@ export default {
           },
           style: {
             fill: null,
-            stroke: 'red',
+            stroke: 'blue',
             lineWidth: 2
           }
         },
@@ -331,7 +408,7 @@ export default {
             textAlign: 'left',
             textVerticalAlign: 'middle',
             fill: fill,
-            font: 'italic none 12px cursive',
+            font: 'bolder 12px "Microsoft YaHei", sans-serif',
             stroke: stroke,
             lineWidth: 0
           }
@@ -414,7 +491,7 @@ export default {
                 y: 0,
                 textAlign: 'left',
                 textVerticalAlign: 'top',
-                fill: '#ff4a4a',
+                fill: '#000',
                 font: 'bolder 12px "Microsoft YaHei", sans-serif',
                 stroke: null,
                 lineWidth: 0
