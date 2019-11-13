@@ -30,9 +30,23 @@ export default {
         text: []
       },
       spinning: 'spinning',
+      tableTitle: {
+        '姓名: ': '张三',
+        '年龄: ': 18,
+        '性别: ': '男',
+        '科别: ': 'xxx',
+        '床号: ': '110',
+        '入院日期: ': '-',
+        '住院病历号: ': '-'
+      },
+      tDataKeys: ['日  期', '住院天数', '手术后天数'],
+      tRow1: ['2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日'],
       heartRateData: [60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90],
       temperatureData: [38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39],
-      breathData: [30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50]
+      breathData: [30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50],
+      tTable: [1],
+      tTableData: []
+
     }
   },
   created () {
@@ -47,7 +61,6 @@ export default {
   },
   mounted () {
     let tableDatas = { left, top, rowSpacing }
-
     this.currentWeeks = 1
     this.tableDatas = tableDatas
     this.spinning = 'showCharts'
@@ -291,9 +304,9 @@ export default {
       let inspectionCycle = [0, 4, 8, 12, 16, 20] // 巡查间隔数组
       let columnNum = $TSSParam.columnNum // 列数
       let bRowNum = Object.keys(configFile).length + 1 // 尾部行数
-      let tDataKeys = ['日  期', '住院天数', '手术后天数'] // 拆分topDataSet 保留key
+      let tDataKeys = this.tDataKeys // 拆分topDataSet 保留key
       let bDataKeys = this.splitJson(configFile).values // 拆分bottomDataSet 保留key
-
+      let tTable = this.tTable
       /* tableTitle数据绘制 */
       let tableTitleList = this.getTableTitle() // 表第一行姓名年龄等一组一组的数据
       list = [...list, ...tableTitleList]
@@ -311,7 +324,7 @@ export default {
       list = [...list, ...middleList]
 
       /* 页脚部分：水平线、纵向线、以及文字 */
-      let bottomList = this.getBottomList(bDataKeys, bRowNum, columnNum)
+      let bottomList = this.getBottomList(bDataKeys, tTable, bRowNum, columnNum)
       list = [...list, ...bottomList]
 
       /* 拐点 */
@@ -383,15 +396,7 @@ export default {
     getTableTitle () {
       let tableTitleList = []
       // 中间数据
-      const tableTitle = {
-        '姓名: ': '张三',
-        '年龄: ': 18,
-        '性别: ': '男',
-        '科别: ': 'xxx',
-        '床号: ': '110',
-        '入院日期: ': '-',
-        '住院病历号: ': '-'
-      }
+      const tableTitle = this.tableTitle
       let addLeft = left + 4
       for (let keys in tableTitle) {
         let stroke = ''
@@ -476,7 +481,27 @@ export default {
             y2: !j || (j > 3 && !((j - 3) % 6)) ? tRowNum * rowSpacing : 0
           }
         })
-
+        let template = {
+          type: 'text',
+          top: null,
+          left: null,
+          cursor: 'auto',
+          style: {
+            text: null,
+            x: 0,
+            y: 0,
+            textAlign: 'left',
+            textVerticalAlign: 'middle',
+            fill: '#000',
+            font: 'italic none 12px cursive',
+            stroke: null,
+            lineWidth: 0
+          }
+        }
+        template.top = top + (mRowNum - 1) * rowSpacing + 7
+        template.left = left + (j * 6) * rowSpacing + 5 + 9 * rowSpacing
+        template.style.text = this.tTableData[j]
+        listHTML.push(template)
         // 添加头部数据文字
         if (!(j % 6)) {
           for (let k = 0; k < tRowNum; k++) {
@@ -683,7 +708,7 @@ export default {
     },
 
     /* 页脚部分：水平线、纵向线、以及文字 */
-    getBottomList (bDataKeys, bRowNum, columnNum) {
+    getBottomList (bDataKeys, tTable, bRowNum, columnNum) {
       let bottomList = []
       for (let keys = 0; keys <= bRowNum; keys++) {
         let leftDistance = 0
@@ -742,6 +767,28 @@ export default {
             y2: lineLength
           }
         })
+
+        let template = {
+          type: 'text',
+          top: null,
+          left: null,
+          cursor: 'auto',
+          style: {
+            text: null,
+            x: 0,
+            y: 0,
+            textAlign: 'left',
+            textVerticalAlign: 'middle',
+            fill: '#000',
+            font: 'italic none 12px cursive',
+            stroke: null,
+            lineWidth: 0
+          }
+        }
+        template.top = top + (mRowNum - 1) * rowSpacing + 7
+        template.left = left + (indexs * 6) * rowSpacing + 5 + 9 * rowSpacing
+        template.style.text = tTable[indexs]
+        bottomList.push(template)
 
         // 添加页脚数据集
         if (!(indexs % 6)) {
