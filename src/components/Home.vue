@@ -241,61 +241,6 @@ export default {
 
       return pulseData
     },
-    // tooltip的移入移除
-    getTooltip ($el, $totalDataTemplate, $index, $mouseType, $timeDataSet) {
-      let count = 0
-      if ($mouseType !== 'mouseOut') {
-        for (let i = 0; i < $totalDataTemplate.length; i++) {
-          if ($totalDataTemplate[i] !== '') {
-            if ($index === count) {
-              let elTypeText = ''
-              switch ($el.target.type) {
-                case 'circle':
-                  elTypeText = '脉搏'
-                  break
-                case 'ring':
-                  elTypeText = '心率'
-                  break
-                case 'text':
-                  elTypeText = '体温'
-                  break
-                case 'image':
-                  elTypeText = '呼吸'
-                  break
-              }
-              let text = (
-                <div>
-                  <p>
-                    <span>{elTypeText}: </span>
-                    <span>{$totalDataTemplate[i]}</span>
-                  </p>
-                  <p style={{ marginBottom: 0 }}>{$timeDataSet[i]}</p>
-                </div>
-              )
-              this.setState({
-                tooltipType: {
-                  isShow: 'block',
-                  left: $el.event.clientX + 10,
-                  top: $el.event.clientY + 10,
-                  text: [text]
-                }
-              })
-              break
-            }
-            count++
-          }
-        }
-      } else {
-        this.setState({
-          tooltipType: {
-            isShow: 'none',
-            left: 0,
-            top: 0,
-            text: []
-          }
-        })
-      }
-    },
     // 绘制图表
     getTableData ($TSSParam) {
       let list = [] // 图表数组
