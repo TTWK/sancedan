@@ -41,11 +41,12 @@ export default {
       },
       tDataKeys: ['日  期', '住院天数', '手术后天数'],
       tRow1: ['2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日', '2019年11月4日'],
+      tRow2: ['1', '2', '3', '4', '5', '6', '7'],
+      tRow3: ['1', '2', '3', '4', '5', '6', '7'],
       heartRateData: [60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90, 60, 80, 70, 75, 70, 90],
       temperatureData: [38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39, 38, 39],
       breathData: [30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50, 30, 40, 30, 20, 40, 50],
-      tTable: [1],
-      tTableData: []
+      tTable: []
 
     }
   },
@@ -498,9 +499,51 @@ export default {
             lineWidth: 0
           }
         }
-        template.top = top + (mRowNum - 1) * rowSpacing + 7
+        template.top = top - 4 * rowSpacing + 7
         template.left = left + (j * 6) * rowSpacing + 5 + 9 * rowSpacing
-        template.style.text = this.tTableData[j]
+        template.style.text = this.tRow1[j]
+        listHTML.push(template)
+        template = {
+          type: 'text',
+          top: null,
+          left: null,
+          cursor: 'auto',
+          style: {
+            text: null,
+            x: 0,
+            y: 0,
+            textAlign: 'left',
+            textVerticalAlign: 'middle',
+            fill: '#000',
+            font: 'italic none 12px cursive',
+            stroke: null,
+            lineWidth: 0
+          }
+        }
+        template.top = top - 3 * rowSpacing + 7
+        template.left = left + (j * 6) * rowSpacing + 5 + 9 * rowSpacing
+        template.style.text = this.tRow2[j]
+        listHTML.push(template)
+        template = {
+          type: 'text',
+          top: null,
+          left: null,
+          cursor: 'auto',
+          style: {
+            text: null,
+            x: 0,
+            y: 0,
+            textAlign: 'left',
+            textVerticalAlign: 'middle',
+            fill: '#000',
+            font: 'italic none 12px cursive',
+            stroke: null,
+            lineWidth: 0
+          }
+        }
+        template.top = top - 2 * rowSpacing + 7
+        template.left = left + (j * 6) * rowSpacing + 5 + 9 * rowSpacing
+        template.style.text = this.tRow3[j]
         listHTML.push(template)
         // 添加头部数据文字
         if (!(j % 6)) {
