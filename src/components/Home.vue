@@ -52,7 +52,7 @@ export default {
   },
   created () {
     let whStyle = {
-      height: top + 50 + (43 + Object.keys(configFile).length) * rowSpacing,
+      height: top + 50 + (43 + configFile.length) * rowSpacing,
       width:
         left * 2 + ((7 + 1) * 6 + 3) * rowSpacing < 962
           ? 962
@@ -195,25 +195,6 @@ export default {
       })
       console.log(myChart)
     },
-    // 时间计算
-    timeDifference ($timeOne, $timeTwe) {
-      return (
-        parseInt(
-          (new Date($timeOne).getTime() - new Date($timeTwe).getTime()) /
-            (60 * 60 * 24 * 1000)
-        ) + 1
-      )
-    },
-    // 拆分数据结构
-    splitJson ($dataSet) {
-      let dataKeys = []
-      let dataValue = []
-      for (let key in $dataSet) {
-        dataKeys = [...dataKeys, key]
-        dataValue = [...dataValue, $dataSet[key]]
-      }
-      return { keys: dataKeys, values: dataValue }
-    },
     // 处理折现数据
     getLinePoints ($type, $polylineData, $left, $top, $mRowNum, $rowSpacing) {
       let pulseData = []
@@ -249,9 +230,9 @@ export default {
       let rowSpacing = $TSSParam.rowSpacing // 间距;
       let inspectionCycle = [0, 4, 8, 12, 16, 20] // 巡查间隔数组
       let columnNum = $TSSParam.columnNum // 列数
-      let bRowNum = Object.keys(configFile).length + 1 // 尾部行数
+      let bRowNum = configFile.length + 1 // 尾部行数
       let tDataKeys = this.tDataKeys // 拆分topDataSet 保留key
-      let bDataKeys = this.splitJson(configFile).values // 拆分bottomDataSet 保留key
+      let bDataKeys = configFile // 拆分bottomDataSet 保留key
       let tTable = this.tTable
       /* tableTitle数据绘制 */
       let tableTitleList = this.getTableTitle() // 表第一行姓名年龄等一组一组的数据
